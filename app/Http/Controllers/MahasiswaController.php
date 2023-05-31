@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use App\Models\MataKuliah;
+use App\Models\Mahasiswa_MataKuliah;
+use Illuminate\Support\Facades\DB;
 
 class MahasiswaController extends Controller
 {
@@ -138,4 +141,23 @@ class MahasiswaController extends Controller
         $mahasiswas = Mahasiswa::where('nama', 'like', '%' . $data . '%')->paginate(6);
         return view('mahasiswa.index', compact('mahasiswas'));
     }
+
+    public function khs(Mahasiswa $mahasiswa)
+    {
+        $matkuls = $mahasiswa->MataKuliah;
+
+        return view('mahasiswa.nilai', [
+            'matkuls' => $matkuls,
+            'mahasiswa' => $mahasiswa
+        ]);
+        // dd($matkuls);
+
+        // $role = Mahasiswa::where('Nim', '2141720039')->first();
+
+        // dd($role->matakuliahs);
+
+
+        // dd($data);
+    }
+
 }

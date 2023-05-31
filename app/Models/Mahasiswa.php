@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Mahasiswas;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Mahasiswa extends Model
 {
@@ -28,5 +29,16 @@ class Mahasiswa extends Model
     {
         return $this -> belongsTo(Kelas::class);
     }
+
+    public function MataKuliah(): BelongsToMany
+    {
+        return $this->belongsToMany(Matakuliah::class, 'nilai', 'mahasiswa_id', 'matakuliah_id')->withPivot('nilai');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'Nim';
+    }
+
 
 }
