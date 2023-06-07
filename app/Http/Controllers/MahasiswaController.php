@@ -8,6 +8,8 @@ use App\Models\Kelas;
 use App\Models\MataKuliah;
 use App\Models\Mahasiswa_MataKuliah;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MahasiswaController extends Controller
 {
@@ -40,6 +42,7 @@ class MahasiswaController extends Controller
         $validate = $request->validate([
             'Nim' => 'required',
             'Nama' => 'required',
+            'foto' => 'required',
             'kelas_id' => 'required',
             'Jurusan' => 'required',
             'Hp' => 'required',
@@ -47,11 +50,18 @@ class MahasiswaController extends Controller
             'TTL' => 'required'
         ]);
 
+        if ($request->file('foto')) {
+            $nama_foto = $request->file('foto')->store('fotoMahasiswa', 'public');
+        } else {
+            dd('foto kosong');
+        }
+
         //fungsi eloquent untuk menambah data
         // Mahasiswa::create($validate);
         $mahasiswa = new Mahasiswa;
         $mahasiswa->nim = $request->get("Nim");
         $mahasiswa->nama = $request->get("Nama");
+        $mahasiswa->foto = $nama_foto;
         $mahasiswa->kelas_id = $request->get("kelas_id");
         $mahasiswa->jurusan = $request->get("Jurusan");
         $mahasiswa->hp = $request->get("Hp");
@@ -101,17 +111,28 @@ class MahasiswaController extends Controller
             $request->validate([
                 'Nim' => 'required',
                 'Nama' => 'required',
+                'foto' => 'required',
                 'kelas_id' => 'required',
                 'Jurusan' => 'required',
                 'Hp' => 'required',
                 'Email' => 'required',
                 'TTL' => 'required'
             ]);
+
+            $mhs = Mahasiswa::find($Nim);
+
+            if ($mhs->foto && file_exists(storage_path('app/public/' . $mhs->foto))) {
+                Storage::delete('public/' . $mhs->foto);
+            }
+
+            $nama_foto = $request->file('foto')->store('fotoMahasiswa', 'public');
+
         //fungsi eloquent untuk mengupdate
             // Mahasiswa::find($Nim)->update($request->all());
             $mahasiswa = Mahasiswa::with('kelas')->where('nim', $Nim)->first();
             $mahasiswa->nim = $request->get("Nim");
             $mahasiswa->nama = $request->get("Nama");
+            $mahasiswa->foto = $nama_foto;
             $mahasiswa->kelas_id = $request->get("kelas_id");
             $mahasiswa->jurusan = $request->get("Jurusan");
             $mahasiswa->hp = $request->get("Hp");
@@ -158,6 +179,16 @@ class MahasiswaController extends Controller
 
 
         // dd($data);
+    }
+
+    public function cetak_khs(Mahasiswa $mahasiswa)
+    {
+        $matkuls = $mahasiswa->MataKuliah;
+        $pdf = Pdf::loadview('mahasiswa.cetak_nilai', [
+            'matkuls' => $matkuls,
+            'mahasiswa' => $mahasiswa,
+        ]);
+        return $pdf->stream();
     }
 
 }

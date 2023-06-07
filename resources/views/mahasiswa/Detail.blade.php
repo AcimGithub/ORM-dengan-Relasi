@@ -16,6 +16,9 @@
  <li class="list-groupitem"><b>Hp: </b>{{$Mahasiswa->Hp}}</li>
  <li class="list-groupitem"><b>Email: </b>{{$Mahasiswa->Email}}</li>
  <li class="list-groupitem"><b>TTL: </b>{{$Mahasiswa->TTL}}</li>
+ <li class="list-group-item"><img width="200px" height="200px"
+                                src="{{ asset('storage/' . $Mahasiswa->foto) }}">
+                        </li>
  </ul>
  </div>
  <a class="btn btn-success mt3" href="{{ route('mahasiswas.index') }}">Kembali</a>

@@ -26,11 +26,12 @@
  <tr>
  <th>Nim</th>
  <th>Nama</th>
+ <th>Foto</th>
  <th>Kelas</th>
  <th>Jurusan</th>
  <th>Hp</th>
- <th>Email</th>
- <th>TTL</th>
+ <!-- <th>Email</th>
+ <th>TTL</th> -->
  <th width="280px">Action</th>
  </tr>
  @foreach ($paginate as $Mahasiswa)
@@ -38,11 +39,17 @@
 
  <td>{{ $Mahasiswa->Nim }}</td>
  <td>{{ $Mahasiswa->Nama }}</td>
+ @if ($Mahasiswa->foto == '')
+                    <td><img width="100px" height="100px" src="{{ asset('image/pp.png') }}" style="object-fit: cover"></td>
+                @else
+                    <td><img width="100px" height="100px" src="{{ asset('storage/' . $Mahasiswa->foto) }}"
+                            style="object-fit: cover"></td>
+                @endif
  <td>{{ $Mahasiswa->Kelas ->nama_kelas }}</td>
  <td>{{ $Mahasiswa->Jurusan }}</td>
  <td>{{ $Mahasiswa->Hp }}</td>
- <td>{{ $Mahasiswa->Email }}</td>
- <td>{{ $Mahasiswa->TTL }}</td>
+ <!-- <td>{{ $Mahasiswa->Email }}</td>
+ <td>{{ $Mahasiswa->TTL }}</td> -->
  <td>
  <form action="{{ route('mahasiswas.destroy',$Mahasiswa->Nim) }}" method="POST">
 

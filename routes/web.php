@@ -22,6 +22,10 @@ Route::get('/search', [MahasiswaController::class,'search']);
 
 Route::get('mahasiswa/{mahasiswa}/khs', [MahasiswaController::class, 'khs'])->name('mahasiswas.nilai');
 
+Route::get('/article/cetak_pdf', [ArticleController::class, 'cetak_pdf']);
+
+Route::get('mahasiswa/{mahasiswa}/cetak_khs', [MahasiswaController::class, 'cetak_khs'])->name('mahasiswa.cetak_khs');
+
 Route::resource('articles', ArticleController::class);
 
 Route::get('/', function () {

@@ -22,7 +22,7 @@ nput.<br><br>
  </div>
  @endif
  <form method="post" action="{{ route('mahasiswas.store') }}" id="myFo
-rm">
+rm" enctype="multipart/form-data">
  @csrf
  <div class="form-group">
  <label for="Nim">Nim</label>
@@ -32,6 +32,11 @@ rm">
  <label for="Nama">Nama</label>
  <input type="Nama" name="Nama" class="formcontrol" id="Nama" aria-describedby="Nama" >
  </div>
+ <div class="form-group">
+                            <label for="foto">Foto</label>
+                            <input type="file" name="foto" class="form-control" id="foto" aria-describedby="foto"
+                                accept="image/*">
+                        </div>
  <div class="form-group">
  <label for="Kelas">Kelas</label>
  <select class="form-control" name="kelas_id">
